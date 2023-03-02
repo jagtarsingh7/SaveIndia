@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SaveIndia</title>
+    <script src="https://www.gstatic.com/firebasejs/ui/4.8.1/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.1/firebase-ui-auth.css" />
+
+    <style>
+        #firebase-firebaseui-auth-container
+        {
+           
+          width: 111px;
+          height: 45px;
+        }
+    </style>
+
+
+
+</head>
+<body>
+
+        <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+      
+        <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+        <script src="/__/firebase/8.9.1/firebase-app.js"></script>
+      
+        <!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+        <script src="/__/firebase/8.9.1/firebase-analytics.js"></script>
+      
+        <!-- Add Firebase products that you want to use -->
+        <script src="/__/firebase/8.9.1/firebase-auth.js"></script>
+        <script src="/__/firebase/8.9.1/firebase-firestore.js"></script>
+
+        <script src="/__/firebase/init.js"></script>
+
+
+        <script>
+
+                // Initialize the FirebaseUI Widget using Firebase.
+            var ui = new firebaseui.auth.AuthUI(firebase.auth());
+
+
+        </script>
+
+
+
+                    
+                    
+        <h1>Welcome to My Awesome App</h1>
+        <div id="firebaseui-auth-container"></div>
+        <div id="loader">Loading...</div>
+
+
+     <script>
+            
+
+
+            // Temp variable to hold the anonymous user data if needed.
+            var data = null;
+            // Hold a reference to the anonymous current user.
+            var anonymousUser = firebase.auth().currentUser;
+            ui.start('#firebaseui-auth-container', {
+            // Whether to upgrade anonymous users should be explicitly provided.
+            // The user must already be signed in anonymously before FirebaseUI is
+            // rendered.
+            autoUpgradeAnonymousUsers: true,
+            signInSuccessUrl: 'https://saveindia.web.app/author.html',
+            signInOptions: [
+                firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+                firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+                firebase.auth.EmailAuthProvider.PROVIDER_ID,
+                firebase.auth.PhoneAuthProvider.PROVIDER_ID
+            ],
+            callbacks: {
+                // signInFailure callback must be provided to handle merge conflicts which
+                // occur when an existing credential is linked to an anonymous user.
+                signInFailure: function(error) {
+                // For merge conflicts, the error.code will be
+                // 'firebaseui/anonymous-upgrade-merge-conflict'.
+                if (error.code != 'firebaseui/anonymous-upgrade-merge-conflict') {
+                    return Promise.resolve();
+                }
+                // The credential the user tried to sign in with.
+                var cred = error.credential;
+                // Copy data from anonymous user to permanent user and delete anonymous
+                // user.
+                // ...
+                // Finish sign-in after data is copied.
+                return firebase.auth().signInWithCredential(cred);
+                }
+            }
+            });
+
+
+
+
+
+    </script>
+
+    
+    
+
+
+</body>
+</html>
